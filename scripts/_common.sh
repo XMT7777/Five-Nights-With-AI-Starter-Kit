@@ -47,9 +47,16 @@ find_python() {
   local c
   for c in python3.12 python3.11 python3.10 python3.13 python3.9 python3 python; do
     if has "$c" && "$c" -c 'import sys; sys.exit(0 if (3,9) <= sys.version_info[:2] <= (3,13) else 1)' 2>/dev/null; then
-      echo "$c"; return 0
+      echo "$c"
+      return 0
     fi
   done
+
+  if has py && py -3.11 -c 'import sys; sys.exit(0 if (3,9) <= sys.version_info[:2] <= (3,13) else 1)' 2>/dev/null; then
+    echo "py -3.11"
+    return 0
+  fi
+
   return 1
 }
 
